@@ -1,6 +1,6 @@
 import SendForm from "@/components/SendForm";
 import ReceiveWallet from "@/components/ReceiveWallet";
-import { getEthBalance } from "@/lib/blockchain";
+import { getUSDCBalance } from "@/lib/blockchain";
 import { prisma } from "@/lib/prisma";
 
 import { currentUser } from "@clerk/nextjs/server";
@@ -46,7 +46,7 @@ const transactions = await prisma.transaction.findMany({
 let balance = "0";
 
 if (wallet) {
-  balance = await getEthBalance(
+  balance = await getUSDCBalance(
     wallet.address as `0x${string}`
   );
 }
@@ -103,7 +103,7 @@ if (wallet) {
               Wallet Balance
             </h3>
 <p className="text-3xl font-bold mt-3">
-  {balance} ETH
+  {balance} USDC
 </p>
           </div>
 

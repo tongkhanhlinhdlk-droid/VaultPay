@@ -39,9 +39,7 @@ function shortenAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
-function formatEth(amount: string) {
-  return Number(amount) / 1e18;
-}
+
 export default function EscrowPage() {
   const [mounted, setMounted] = useState(false);
   const [seller, setSeller] = useState("");
@@ -365,7 +363,7 @@ if (!mounted) {
     </p>
 
     <p>
-      Amount: {deal[2].toString()} wei
+      Amount: {Number(deal[2]) / 1e6} USDC
     </p>
 
     <p>
@@ -497,7 +495,7 @@ if (!mounted) {
   )}
 </div>
     <a
-      href={`https://sepolia.etherscan.io/tx/${deal.txHash}`}
+      href={`https://testnet.arcscan.app/tx/${deal.txHash}`}
       target="_blank"
       rel="noopener noreferrer"
       className="mt-3 block text-sm text-blue-600 underline"
