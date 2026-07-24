@@ -2,7 +2,7 @@ import SendForm from "@/components/SendForm";
 import ReceiveWallet from "@/components/ReceiveWallet";
 import { getEthBalance } from "@/lib/blockchain";
 import { prisma } from "@/lib/prisma";
-import { UserButton } from "@clerk/nextjs";
+
 import { currentUser } from "@clerk/nextjs/server";
 import CreateWalletButton from "@/components/CreateWalletButton";
 import ViewOnExplorer from "@/components/ViewOnExplorer";
@@ -57,18 +57,14 @@ if (wallet) {
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">
-              Welcome to VaultPay 👋
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Your Web3 payment dashboard
-            </p>
-          </div>
-
-          <UserButton />
-        </div>
+        <div className="mb-8">
+  <h1 className="text-3xl font-bold">
+    Welcome to VaultPay 👋
+  </h1>
+  <p className="text-gray-600 mt-2">
+    Your Web3 payment dashboard
+  </p>
+</div>
 
         <div className="bg-white rounded-xl shadow p-6 mb-6">
           <h2 className="text-xl font-semibold mb-3">
