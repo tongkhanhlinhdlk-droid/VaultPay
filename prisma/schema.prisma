@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String  @id @default(cuid())
+  clerkId  String  @unique
+  email    String  @unique
+  fullName String?
+
+  wallet Wallet?
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Wallet {
+  id String @id @default(cuid())
+
+  userId String @unique
+  address String @unique
+  encryptedPrivateKey String?
+
+  chain String @default("ethereum")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id String @id @default(cuid())
+
+  userId String
+
+  from String
+  to String
+  amount String
+  hash String @unique
+
+  status String @default("pending")
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model Deal {
+  id String @id @default(cuid())
+
+  dealId Int @unique
+
+  buyer String
+  seller String
+
+  amount String
+
+  status String
+
+  txHash String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
