@@ -279,9 +279,9 @@ if (!mounted) {
 
 
       {!address && (
-        <p className="mb-4 text-red-500">
-          Please connect wallet first
-        </p>
+        <p className="mb-4 text-yellow-600">
+  Connect wallet to authorize blockchain transactions.
+</p>
       )}
 
 

@@ -3,7 +3,7 @@ type Props = {
 };
 
 export default function ViewOnExplorer({ address }: Props) {
-  const explorerUrl = `https://sepolia.etherscan.io/address/${address}`;
+  const explorerUrl = `https://testnet.arcscan.app/address/${address}`;
 
   return (
     <a
@@ -12,7 +12,7 @@ export default function ViewOnExplorer({ address }: Props) {
       rel="noopener noreferrer"
       className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
     >
-      🔗 View on Etherscan
+      🔗 View on ArcScan
     </a>
   );
 }

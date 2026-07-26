@@ -1,3 +1,5 @@
+"use client";
+
 import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
@@ -13,13 +15,14 @@ export default function LoginCard() {
       </p>
 
       <div className="mt-6 space-y-4">
-        <SignInButton mode="modal">
+
+        <SignInButton mode="modal" forceRedirectUrl="/dashboard">
           <Button className="w-full">
             Continue with Email
           </Button>
         </SignInButton>
 
-        <SignInButton mode="modal">
+        <SignInButton mode="modal" forceRedirectUrl="/dashboard">
           <Button variant="outline" className="w-full">
             Continue with Google
           </Button>
@@ -27,13 +30,16 @@ export default function LoginCard() {
 
         <div className="flex items-center gap-4">
           <div className="h-px flex-1 bg-slate-700" />
-          <span className="text-xs text-slate-500">OR</span>
+          <span className="text-xs text-slate-500">
+            OR
+          </span>
           <div className="h-px flex-1 bg-slate-700" />
         </div>
 
         <Button variant="secondary" className="w-full">
           Connect Wallet
         </Button>
+
       </div>
     </div>
   );

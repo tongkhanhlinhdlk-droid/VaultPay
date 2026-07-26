@@ -44,7 +44,7 @@ export default function SendForm() {
 
       <input
         type="number"
-        placeholder="Amount (ETH)"
+        placeholder="Amount (USDC)"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         className="w-full rounded-lg border p-3"
@@ -65,13 +65,13 @@ export default function SendForm() {
 
           {hash && (
             <a
-              href={`https://sepolia.etherscan.io/tx/${hash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 block text-blue-600 underline"
-            >
-              View Transaction on Etherscan
-            </a>
+             href={`https://testnet.arcscan.app/tx/${hash}`}
+target="_blank"
+rel="noopener noreferrer"
+className="mt-2 block text-blue-600 underline"
+>
+  View Transaction on ArcScan
+</a>
           )}
 
         </div>

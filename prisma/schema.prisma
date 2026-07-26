@@ -28,7 +28,7 @@ model Wallet {
   address String @unique
   encryptedPrivateKey String?
 
-  chain String @default("ethereum")
+  chain String @default("arc-testnet")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

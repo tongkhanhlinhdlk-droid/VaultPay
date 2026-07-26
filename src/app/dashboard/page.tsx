@@ -1,4 +1,3 @@
-import SendForm from "@/components/SendForm";
 import ReceiveWallet from "@/components/ReceiveWallet";
 import { getUSDCBalance } from "@/lib/blockchain";
 import { prisma } from "@/lib/prisma";
@@ -35,13 +34,29 @@ let wallet = await prisma.wallet.findUnique({
     userId: dbUser.id,
   },
 });
-const transactions = await prisma.transaction.findMany({
+
+const createdDeals = await prisma.deal.count({
   where: {
-    userId: dbUser.id,
+    status: "Created",
   },
+});
+
+const completedDeals = await prisma.deal.count({
+  where: {
+    status: "Completed",
+  },
+});
+
+const refundedDeals = await prisma.deal.count({
+  where: {
+    status: "Refunded",
+  },
+});
+const recentDeals = await prisma.deal.findMany({
   orderBy: {
     createdAt: "desc",
   },
+  take: 5,
 });
 let balance = "0";
 
@@ -109,75 +124,107 @@ if (wallet) {
 
           <div className="bg-white rounded-xl shadow p-6">
   <h3 className="font-semibold mb-4">
-    Send ETH
+    Escrow
   </h3>
 
-  <SendForm />
+  <p className="text-gray-600 mb-4">
+    Create and manage secure USDC escrow deals.
+  </p>
+
+  <a
+    href="/dashboard/escrow"
+    className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+  >
+    Open Escrow
+  </a>
 </div>
 
           <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="font-semibold">
-              Receive Payment
-            </h3>
-            <p className="text-gray-500 mt-3">
-              Receive funds instantly
-            </p>
-          </div>
+  <h3 className="font-semibold">
+    Network
+  </h3>
+
+  <p className="text-gray-500 mt-3">
+    Arc Testnet
+  </p>
+
+  <p className="text-gray-500">
+    USDC Payments
+  </p>
+</div>
         </div>
 
         <div className="bg-white rounded-xl shadow p-6 mt-6">
   <h2 className="text-xl font-semibold mb-4">
-    Transaction History
+    Escrow Overview
   </h2>
 
-  {transactions.length === 0 ? (
-    <p className="text-gray-500">
-      No transactions yet.
-    </p>
-  ) : (
-    <div className="space-y-4">
-      {transactions.map((tx) => (
-  <div
-    key={tx.id}
-    className="border rounded-lg p-4 space-y-2"
-  >
+  <div className="space-y-3 mb-6">
     <div className="flex justify-between">
-      <p className="font-semibold">
-        Sent {tx.amount} ETH
-      </p>
-
-      <span className="text-green-600 text-sm">
-        {tx.status}
-      </span>
+      <span>🟡 Created</span>
+      <span className="font-semibold">{createdDeals}</span>
     </div>
 
-    <p className="text-sm">
-      To:{" "}
-      <span className="font-mono">
-        {tx.to.slice(0, 6)}
-        ...
-        {tx.to.slice(-4)}
-      </span>
-    </p>
+    <div className="flex justify-between">
+      <span>🟢 Completed</span>
+      <span className="font-semibold">{completedDeals}</span>
+    </div>
 
-    <p className="text-sm text-gray-500">
-      {new Date(tx.createdAt).toLocaleString()}
-    </p>
-
-    <a
-      href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 underline text-sm"
-    >
-      View on Etherscan
-    </a>
+    <div className="flex justify-between">
+      <span>🔴 Refunded</span>
+      <span className="font-semibold">{refundedDeals}</span>
+    </div>
   </div>
-))}
+
+  <a
+    href="/dashboard/escrow"
+    className="inline-block rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
+  >
+    Open Escrow Dashboard
+  </a>
+</div>
+<div className="bg-white rounded-xl shadow p-6 mt-6">
+  <h2 className="text-xl font-semibold mb-4">
+    Recent Escrow Deals
+  </h2>
+
+  {recentDeals.length === 0 ? (
+    <p className="text-gray-500">
+      No escrow deals yet.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {recentDeals.map((deal) => (
+        <div
+          key={deal.id}
+          className="flex items-center justify-between border-b pb-2"
+        >
+          <div>
+            <p className="font-semibold">
+              Deal #{deal.dealId}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              {Number(deal.amount) / 1e6} USDC
+            </p>
+          </div>
+
+          <span
+            className={`rounded-full px-3 py-1 text-sm ${
+              deal.status === "Created"
+                ? "bg-yellow-100 text-yellow-700"
+                : deal.status === "Completed"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {deal.status}
+          </span>
+        </div>
+      ))}
     </div>
   )}
 </div>
-
       </div>
     </main>
   );

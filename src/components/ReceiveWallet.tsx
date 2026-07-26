@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import QRCode from "react-qr-code";
+import { QRCodeSVG } from "qrcode.react";
 
-type Props = {
+export default function ReceiveWallet({
+  address,
+}: {
   address: string;
-};
-
-export default function ReceiveWallet({ address }: Props) {
+}) {
   const [copied, setCopied] = useState(false);
 
-  const copyAddress = async () => {
+  async function copyAddress() {
     await navigator.clipboard.writeText(address);
 
     setCopied(true);
@@ -18,42 +18,53 @@ export default function ReceiveWallet({ address }: Props) {
     setTimeout(() => {
       setCopied(false);
     }, 2000);
-  };
-
-  const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }
 
   return (
-    <div className="mt-4 rounded-xl border p-5 space-y-4">
-      <div className="text-center">
-        <h3 className="font-semibold text-lg">
-          Receive Payment
-        </h3>
+    <div className="rounded-xl border p-6 space-y-4">
 
-        <p className="text-sm text-gray-500 mt-1">
-          Share your VaultPay wallet to receive ETH
-        </p>
-      </div>
+      <h3 className="text-xl font-semibold">
+        Receive USDC
+      </h3>
+
+      <p className="text-gray-600">
+        Send USDC on Arc Testnet to this wallet
+      </p>
+
 
       <div className="flex justify-center">
-        <QRCode value={address} size={180} />
+        <QRCodeSVG
+          value={address}
+          size={180}
+        />
       </div>
 
-      <div className="bg-gray-100 rounded-lg p-3 text-center">
-        <p className="text-xs text-gray-500">
+
+      <div>
+        <p className="text-sm text-gray-500 mb-2">
           Wallet Address
         </p>
 
-        <p className="font-mono mt-1">
-          {shortAddress}
+        <p className="break-all rounded-lg bg-gray-100 p-3 text-sm font-mono">
+          {address}
         </p>
       </div>
 
+
       <button
         onClick={copyAddress}
-        className="w-full bg-black text-white px-4 py-3 rounded-lg hover:bg-gray-800"
+        className="w-full rounded-lg bg-blue-600 p-3 text-white"
       >
-        {copied ? "✓ Copied" : "📋 Copy Wallet Address"}
+        {copied ? "Copied ✅" : "Copy Wallet Address"}
       </button>
+
+
+      <div className="text-sm text-gray-500">
+        Network: Arc Testnet
+        <br />
+        Token: USDC
+      </div>
+
     </div>
   );
 }

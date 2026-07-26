@@ -7,10 +7,30 @@ import {
   createWalletClient,
   http,
   parseEther,
+  defineChain,
 } from "viem";
 
 import { privateKeyToAccount } from "viem/accounts";
-import { sepolia } from "viem/chains";
+const arcTestnet = defineChain({
+  id: 5042002,
+  name: "Arc Testnet",
+  nativeCurrency: {
+    name: "USDC",
+    symbol: "USDC",
+    decimals: 6,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.testnet.arc.network"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "ArcScan",
+      url: "https://testnet.arcscan.app",
+    },
+  },
+});
 
 
 export async function POST(req: Request) {
@@ -67,10 +87,10 @@ export async function POST(req: Request) {
 
 
     const walletClient = createWalletClient({
-      account,
-      chain: sepolia,
-      transport: http(),
-    });
+  account,
+  chain: arcTestnet,
+  transport: http("https://rpc.testnet.arc.network"),
+});
 
 
     const hash = await walletClient.sendTransaction({
