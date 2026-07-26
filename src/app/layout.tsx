@@ -17,15 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <ClerkProvider
-          afterSignInUrl="/dashboard"
-          afterSignUpUrl="/dashboard"
-        >
-          <Web3Provider>
-            <Navbar />
-            {children}
-          </Web3Provider>
-        </ClerkProvider>
+        <ClerkProvider>
+  <Web3Provider>
+    <Navbar />
+    {children}
+  </Web3Provider>
+</ClerkProvider>
       </body>
     </html>
   );
